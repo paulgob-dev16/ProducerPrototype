@@ -23,15 +23,13 @@ jobs:
         with:
           node-version: '18'
 
-      # If you need native build tools for any native deps, uncomment the next step
-      # - name: Install system build deps
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y build-essential python3 libsqlite3-dev
+      - name: Install system build deps (ensure native modules can compile if needed)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 libsqlite3-dev
 
-      - name: Install dependencies
-        # use install because there is no package-lock.json in the repo
-        run: npm install
+      - name: Install dependencies (skip optional native bindings)
+        run: npm install --no-optional
 
       - name: Build
         env:
