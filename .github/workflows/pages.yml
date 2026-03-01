@@ -25,20 +25,19 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          # Prevent accidental public leakage of a real API key during prototype deploy.
+          GEMINI_API_KEY: ''
         run: npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v1
         with:
           path: ./dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v1
