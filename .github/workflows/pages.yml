@@ -14,7 +14,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -26,12 +27,13 @@ jobs:
 
       - name: Build
         env:
-          # Prevent accidental public leakage of a real API key during prototype deploy.
+          # Keep this empty to avoid embedding a real key into the public bundle.
           GEMINI_API_KEY: ''
         run: npm run build
 
       - name: Upload artifact for Pages
-        uses: actions/upload-pages-artifact@v1
+        # use the Pages-specific upload action v2
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ./dist
 
@@ -40,4 +42,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v2
